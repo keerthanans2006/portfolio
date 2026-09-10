@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Keerthana N S — Software Developer Portfolio">
+  <title>Keerthana N S | Software Developer</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      /* Industrial Palette */
+      --chassis: #e0e5ec;
+      --panel: #f0f2f5;
+      --recessed: #d1d9e6;
+      --ink: #2d3436;
+      --ink-muted: #4a5568;
+      --accent: #ff4757;
+      --accent-fg: #ffffff;
+      
+      /* Shadow colors */
+      --shadow-dark: #babecc;
+      --shadow-light: #ffffff;
+      
+      /* Physics Engine: Neumorphic Shadows */
+      --shadow-card: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+      --shadow-floating: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light), inset 1px 1px 0 rgba(255,255,255,0.5);
+      --shadow-pressed: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+      --shadow-recessed: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+      --shadow-sharp: 4px 4px 8px rgba(0,0,0,0.15), -1px -1px 1px rgba(255,255,255,0.8);
+      --shadow-glow: 0 0 10px 2px rgba(255, 71, 87, 0.6);
+      --shadow-glow-green: 0 0 10px 2px rgba(34, 197, 94, 0.6);
+      
+      /* Typography */
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      /* Radii */
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+      
+      /* Motion Curves */
+      --transition: 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --transition-fast: 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --transition-smooth: 500ms ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--chassis);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      position: relative;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Tactile Noise Overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: overlay;
+    }
+
+    /* Layout Primitives */
+    .container { max-width: 1152px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+    @media (min-width: 768px) { .container { padding: 0 48px; } }
+    section { padding: 96px 0; }
+    
+    .grid { display: grid; gap: 32px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: 1fr; }
+    @media (min-width: 768px) {
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+      .grid-4 { grid-template-columns: repeat(4, 1fr); }
+      .hero-grid { grid-template-columns: 1.1fr 0.9fr; align-items: center; }
+    }
+
+    /* Typography Hierarchy */
+    h1, h2, h3, h4 { color: var(--ink); text-shadow: 0 1px 1px #ffffff; }
+    h1 { font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 24px; }
+    h2 { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 24px; }
+    h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
+    p { font-size: 1.125rem; color: var(--ink-muted); max-width: 65ch; margin-bottom: 16px; line-height: 1.75; }
+
+    .mono-label {
+      font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted);
+    }
+    .text-accent { color: var(--accent); }
+
+    /* Industrial Components */
+    .card {
+      background: var(--chassis);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      transition: all var(--transition);
+      /* Corner Screws */
+      background-image: 
+        radial-gradient(circle at 16px 16px, rgba(0,0,0,0.1) 2px, transparent 3px),
+        radial-gradient(circle at calc(100% - 16px) 16px, rgba(0,0,0,0.1) 2px, transparent 3px),
+        radial-gradient(circle at 16px calc(100% - 16px), rgba(0,0,0,0.1) 2px, transparent 3px),
+        radial-gradient(circle at calc(100% - 16px) calc(100% - 16px), rgba(0,0,0,0.1) 2px, transparent 3px);
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-floating); }
+
+    .vent-container { position: absolute; top: 16px; right: 40px; display: flex; gap: 4px; pointer-events: none; }
+    .vent-slot { width: 4px; height: 24px; border-radius: var(--radius-full); background: var(--recessed); box-shadow: var(--shadow-recessed); }
+
+    .recessed-well {
+      background: var(--chassis); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-recessed); padding: 24px;
+    }
+
+    .badge {
+      font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+      padding: 6px 12px; border-radius: var(--radius-sm);
+      background: var(--chassis); box-shadow: var(--shadow-sharp);
+      color: var(--ink-muted); display: inline-flex; align-items: center; gap: 6px;
+    }
+
+    /* Tactile Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;
+      border: none; cursor: pointer; transition: all var(--transition-fast);
+      padding: 0 28px; min-height: 48px; border-radius: var(--radius-md);
+      text-decoration: none; font-size: 0.85rem;
+    }
+    @media (max-width: 640px) { .btn { width: 100%; } }
+    
+    .btn-primary {
+      background: var(--accent); color: var(--accent-fg);
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 4px 4px 8px rgba(166,50,60,0.4), -4px -4px 8px rgba(255,100,110,0.4);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .btn-primary:active {
+      transform: translateY(2px);
+      box-shadow: inset 6px 6px 12px rgba(166,50,60,0.6), inset -6px -6px 12px rgba(255,100,110,0.6);
+    }
+    
+    .btn-secondary { background: var(--chassis); color: var(--ink); box-shadow: var(--shadow-card); }
+    .btn-secondary:hover { box-shadow: var(--shadow-floating); color: var(--accent); }
+    .btn-secondary:active { transform: translateY(2px); box-shadow: var(--shadow-pressed); }
+    
+    .btn-ghost { background: transparent; color: var(--ink-muted); }
+    .btn-ghost:hover { background: var(--recessed); box-shadow: var(--shadow-recessed); color: var(--ink); }
+
+    /* LED Indicators */
+    .led { width: 10px; height: 10px; border-radius: var(--radius-full); display: inline-block; flex-shrink: 0; }
+    .led-green { background: #22c55e; box-shadow: var(--shadow-glow-green); animation: pulse-green 2s infinite; }
+    .led-red { background: var(--accent); box-shadow: var(--shadow-glow); animation: pulse-red 2s infinite; }
+
+    @keyframes pulse-green {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+    @keyframes pulse-red {
+      0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(255, 71, 87, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+    }
+
+    /* Navigation Panel */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 0;
+      transition: all var(--transition);
+    }
+    .nav-scrolled { padding: 12px 0; backdrop-filter: blur(12px); background: rgba(224, 229, 236, 0.8); }
+    .nav-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--chassis); padding: 12px 24px;
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+    }
+    .nav-status { display: flex; align-items: center; gap: 12px; }
+    .nav-links { display: none; gap: 8px; align-items: center; }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+
+    /* Mobile Menu Drawer */
+    .mobile-menu {
+      position: fixed; top: 100px; left: 24px; right: 24px;
+      background: var(--chassis); border-radius: var(--radius-lg);
+      padding: 24px; box-shadow: var(--shadow-floating);
+      display: flex; flex-direction: column; gap: 16px;
+      transform: translateY(-20px); opacity: 0; pointer-events: none;
+      transition: all var(--transition); z-index: 99;
+    }
+    .mobile-menu.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    .mobile-menu .btn { width: 100%; justify-content: flex-start; }
+    
+    .hamburger {
+      display: flex; flex-direction: column; gap: 5px; background: none; border: none;
+      cursor: pointer; padding: 8px; width: 40px; height: 40px;
+      align-items: center; justify-content: center;
+      border-radius: var(--radius-md); box-shadow: var(--shadow-card);
+    }
+    @media (min-width: 768px) { .hamburger { display: none; } }
+    .hamburger:active { box-shadow: var(--shadow-pressed); }
+    .hamburger span { display: block; width: 20px; height: 2px; background: var(--ink); border-radius: 2px; transition: var(--transition); }
+
+    /* Device Mockup (Hero Signature Element) */
+    .device-mockup {
+      border-radius: var(--radius-xl); padding: 16px;
+      background: #2d3436; box-shadow: var(--shadow-floating);
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABADeOQ8CXl/xfgAAAABJRU5ErkJggg==');
+      position: relative;
+      margin-top: 48px;
+    }
+    @media (min-width: 1024px) { .device-mockup { margin-top: 0; transform: rotate(1deg); } }
+    
+    /* Device side buttons */
+    .device-mockup::before {
+      content: ''; position: absolute; left: -4px; top: 60px; width: 4px; height: 40px;
+      background: #1e272e; border-radius: 4px 0 0 4px; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    .device-mockup::after {
+      content: ''; position: absolute; left: -4px; top: 120px; width: 4px; height: 60px;
+      background: #1e272e; border-radius: 4px 0 0 4px; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .device-bezel {
+      border-radius: var(--radius-lg); background: #1e272e; padding: 12px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+    }
+    .device-screen {
+      position: relative; background: #000; border-radius: var(--radius-md);
+      overflow: hidden; aspect-ratio: 1/1; box-shadow: inset 0 4px 12px rgba(0,0,0,0.9);
+    }
+    @media (min-width: 1024px) { .device-screen { aspect-ratio: 4/5; } }
+    
+    .device-screen img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(100%) contrast(1.1); transition: filter var(--transition-smooth);
+    }
+    .device-mockup:hover .device-screen img { filter: grayscale(0%) contrast(1); }
+    
+    .scanlines {
+      position: absolute; inset: 0; z-index: 10; pointer-events: none;
+      background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.3) 50%);
+      background-size: 100% 4px;
+    }
+    .device-overlay {
+      position: absolute; bottom: 24px; left: 24px; z-index: 20;
+    }
+    .system-badge {
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+      padding: 8px 16px; border-radius: var(--radius-sm);
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Icon Housing */
+    .icon-housing {
+      display: flex; align-items: center; justify-content: center;
+      width: 64px; height: 64px; border-radius: var(--radius-full);
+      background: var(--chassis); box-shadow: var(--shadow-floating);
+      color: var(--accent); margin-bottom: 24px; transition: all var(--transition);
+    }
+    .group:hover .icon-housing { transform: translateY(-2px); }
+    .group:hover .icon-housing svg { transform: scale(1.1) rotate(10deg); transition: all var(--transition); }
+
+    /* Lists */
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .bullet-list li { position: relative; padding-left: 32px; color: var(--ink-muted); line-height: 1.7; }
+    .bullet-list li svg { position: absolute; left: 0; top: 4px; color: var(--accent); width: 20px; height: 20px; }
+
+    /* Utility */
+    .flex { display: flex; } .items-center { align-items: center; } .justify-between { justify-content: space-between; } .justify-center { justify-content: center; }
+    .gap-2 { gap: 8px; } .gap-4 { gap: 16px; } .gap-6 { gap: 24px; } .gap-8 { gap: 32px; }
+    .mt-4 { margin-top: 16px; } .mt-8 { margin-top: 32px; } .mb-2 { margin-bottom: 8px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; } .mb-12 { margin-bottom: 48px; }
+    .flex-wrap { flex-wrap: wrap; } .text-center { text-align: center; } .mx-auto { margin-left: auto; margin-right: auto; }
+    .pt-32 { padding-top: 160px; }
+
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-status">
+        <div class="led led-green"></div>
+        <span class="mono-label" style="color: var(--ink);">Available</span>
+      </div>
+      <div class="nav-links">
+        <a href="#about" class="btn btn-ghost" style="min-height: 40px;">About</a>
+        <a href="#experience" class="btn btn-ghost" style="min-height: 40px;">Experience</a>
+        <a href="#skills" class="btn btn-ghost" style="min-height: 40px;">Skills</a>
+        <a href="#projects" class="btn btn-ghost" style="min-height: 40px;">Projects</a>
+        <a href="#contact" class="btn btn-primary" style="min-height: 40px;">Contact</a>
+      </div>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" class="btn btn-ghost" onclick="toggleMenu()">About</a>
+  <a href="#experience" class="btn btn-ghost" onclick="toggleMenu()">Experience</a>
+  <a href="#skills" class="btn btn-ghost" onclick="toggleMenu()">Skills</a>
+  <a href="#projects" class="btn btn-ghost" onclick="toggleMenu()">Projects</a>
+  <a href="#contact" class="btn btn-primary" onclick="toggleMenu()">Contact</a>
+</div>
+
+<section id="hero" class="pt-32">
+  <div class="container">
+    <div class="grid hero-grid">
+      <div>
+        <div class="badge mb-6" style="padding: 8px 16px;"><i data-lucide="cpu" style="width:16px;height:16px;"></i> INTERNSHIP CANDIDATE</div>
+        <h1>Keerthana <span class="text-accent">N S</span></h1>
+        <p>Computer Science student and developer. Building functional applications across legal tech, healthcare, and education with tactile precision and mechanical reliability.</p>
+        
+        <div class="flex gap-4 mt-8 flex-wrap">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          <a href="Resume_K.pdf" target="_blank" class="btn btn-secondary"><i data-lucide="download" style="width:18px;height:18px;"></i> View Resume</a>
+        </div>
+        
+        <div class="flex gap-8 mt-12 p-6 recessed-well" style="max-width: max-content; align-items: center;">
+          <div>
+            <div class="mono-label mb-2">CGPA</div>
+            <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-mono); line-height: 1; color: var(--ink); text-shadow: 0 1px 1px #fff;">9.24</div>
+          </div>
+          <div style="width: 2px; height: 48px; background: var(--shadow-dark); box-shadow: 1px 0 0 #fff; border-radius: 2px;"></div>
+          <div>
+            <div class="mono-label mb-2">Projects</div>
+            <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-mono); line-height: 1; color: var(--ink); text-shadow: 0 1px 1px #fff;">04</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="device-mockup">
+        <div class="device-bezel">
+          <div class="device-screen">
+            <div class="scanlines"></div>
+            <img src="keerthana.jpeg" alt="Keerthana N S" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%25\' height=\'100%25\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%232d3436\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-family=\'monospace\' font-size=\'10\' fill=\'%234a5568\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3ENO_IMAGE_DETECTED%3C/text%3E%3C/svg%3E'">
+            <div class="device-overlay">
+              <div class="system-badge">
+                <div class="led led-green"></div>
+                <span class="mono-label" style="color: #fff;">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="mb-12">
+      <div class="mono-label text-accent mb-2">ABOUT ME</div>
+      <h2>Driven to build impactful software.</h2>
+    </div>
+    
+    <div class="grid grid-2">
+      <div class="recessed-well" style="display: flex; flex-direction: column; justify-content: center;">
+        <p>As a <strong style="color: var(--ink);">Computer Science Engineering student</strong> at Marian Engineering College (KTU), I am deeply passionate about architecting scalable systems and intuitive user interfaces.</p>
+        <p>My focus lies in blending <strong style="color: var(--ink);">logical problem solving</strong> with practical application development. I have a proven ability to collaborate in team-based environments and competitive hackathons to drive impactful project outcomes from concept to execution.</p>
+      </div>
+      
+      <div class="card group">
+        <div class="vent-container">
+          <div class="vent-slot"></div><div class="vent-slot"></div><div class="vent-slot"></div>
+        </div>
+        <div class="icon-housing">
+          <i data-lucide="graduation-cap" style="width:28px;height:28px;"></i>
+        </div>
+        <h3>B.Tech Computer Science</h3>
+        <p style="margin-bottom: 24px;">Marian Engineering College, Menamkulam (KTU)</p>
+        
+        <div class="flex gap-2 flex-wrap">
+          <span class="badge"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> CGPA: 9.24 / 10</span>
+          <span class="badge"><i data-lucide="clock" style="width:14px;height:14px;"></i> PRESENT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="container">
+    <div class="mb-12">
+      <div class="mono-label text-accent mb-2">EXPERIENCE</div>
+      <h2>Professional Journey</h2>
+      <p>Practical industry experience applying software engineering and data analytics to real-world problems.</p>
+    </div>
+    
+    <div class="card group">
+      <div class="vent-container">
+        <div class="vent-slot"></div><div class="vent-slot"></div><div class="vent-slot"></div>
+      </div>
+      
+      <div class="flex justify-between items-start mb-6 flex-wrap gap-4">
+        <div>
+          <h3>Data Analytics Intern</h3>
+          <div class="mono-label" style="font-size: 1rem;">Applexus Technologies</div>
+        </div>
+        <div class="badge"><i data-lucide="calendar" style="width:14px;height:14px;"></i> JUNE 2026</div>
+      </div>
+      
+      <div class="recessed-well mb-8" style="padding: 16px;">
+        <span class="mono-label text-accent">CONTEXT:</span> <span style="font-family: var(--font-mono); font-size: 0.85rem;">Smart Data Analyzer (2-Week Industrial Training)</span>
+      </div>
+      
+      <ul class="bullet-list">
+        <li>
+          <i data-lucide="check-circle-2"></i>
+          Developed Smart Data Analyzer, a full-stack Flask web app automating EDA, ML training, and reporting from a single CSV upload.
+        </li>
+        <li>
+          <i data-lucide="check-circle-2"></i>
+          Built an automated data-profiling and quality pipeline (missing-value, IQR outlier, class-imbalance detection) using Pandas/NumPy, paired with interactive Plotly dashboards and an end-to-end ML pipeline (Scikit-Learn) evaluated via R², Accuracy, F1, and ROC-AUC.
+        </li>
+        <li>
+          <i data-lucide="check-circle-2"></i>
+          Designed a rule-based insights engine (10+ severity-rated insights) and multi-format report export (PDF/Excel/ZIP) using ReportLab and openpyxl.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container">
+    <div class="mb-12">
+      <div class="mono-label text-accent mb-2">TECHNICAL SKILLS</div>
+      <h2>Technical Capabilities</h2>
+      <p>A refined toolset dedicated to building robust, user-centric web applications and AI-integrated platforms.</p>
+    </div>
+    
+    <div class="grid grid-4">
+      <div class="card group text-center">
+        <div class="icon-housing mx-auto">
+          <i data-lucide="terminal" style="width:28px;height:28px;"></i>
+        </div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 24px;">Programming</h3>
+        <div class="flex gap-2 flex-wrap justify-center">
+          <span class="badge">Python</span><span class="badge">C</span><span class="badge">SQL</span>
+        </div>
+      </div>
+      
+      <div class="card group text-center">
+        <div class="icon-housing mx-auto">
+          <i data-lucide="database" style="width:28px;height:28px;"></i>
+        </div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 24px;">Data & ML</h3>
+        <div class="flex gap-2 flex-wrap justify-center">
+          <span class="badge">Pandas</span><span class="badge">NumPy</span><span class="badge">Scikit-Learn</span><span class="badge">Plotly</span><span class="badge">Flask</span>
+        </div>
+      </div>
+      
+      <div class="card group text-center">
+        <div class="icon-housing mx-auto">
+          <i data-lucide="wrench" style="width:28px;height:28px;"></i>
+        </div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 24px;">Tools</h3>
+        <div class="flex gap-2 flex-wrap justify-center">
+          <span class="badge">GitHub</span><span class="badge">VS Code</span><span class="badge">Streamlit</span><span class="badge">Figma</span>
+        </div>
+      </div>
+      
+      <div class="card group text-center">
+        <div class="icon-housing mx-auto">
+          <i data-lucide="brain-circuit" style="width:28px;height:28px;"></i>
+        </div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 24px;">Core Skills</h3>
+        <div class="flex gap-2 flex-wrap justify-center">
+          <span class="badge">Problem Solving</span><span class="badge">API Integration</span><span class="badge">Debugging</span><span class="badge">Team Collaboration</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <div class="mb-12">
+      <div class="mono-label text-accent mb-2">PORTFOLIO</div>
+      <h2>Featured Projects</h2>
+      <p>Comprehensive solutions engineered for real-world challenges.</p>
+    </div>
+    
+    <div class="grid grid-2">
+      
+      <div class="card group">
+        <div class="vent-container">
+          <div class="vent-slot"></div><div class="vent-slot"></div><div class="vent-slot"></div>
+        </div>
+        <div class="flex justify-between items-start mb-4">
+          <h3 style="font-size: 1.5rem;">Right Route AI</h3>
+          <div class="badge"><i data-lucide="clock" style="width:12px;height:12px;"></i> FEB 2026</div>
+        </div>
+        <div class="flex gap-2 mb-8 flex-wrap">
+          <span class="badge">Python</span>
+          <span class="badge">Gemini API</span>
+          <span class="badge">Firebase</span>
+        </div>
+        <ul class="bullet-list">
+          <li><i data-lucide="corner-down-right"></i> Architected an AI-driven governance platform using Python, Streamlit, Firebase, and the Gemini API to dynamically map natural language citizen incidents to relevant legal codes.</li>
+          <li><i data-lucide="corner-down-right"></i> Engineered a modular analytics and routing system featuring a governance risk-scoring model, structured escalation timelines, and an OpenStreetMap-backed authority geolocation tracker.</li>
+          <li><i data-lucide="corner-down-right"></i> Created a multilingual document engine that generates lawyer-grade formal complaints, improving legal accessibility and procedural efficiency for the DUK AI Hackathon 2026.</li>
+        </ul>
+      </div>
+
+      <div class="card group">
+        <div class="vent-container">
+          <div class="vent-slot"></div><div class="vent-slot"></div><div class="vent-slot"></div>
+        </div>
+        <div class="flex justify-between items-start mb-4">
+          <h3 style="font-size: 1.5rem;">Financial Resilience</h3>
+          <div class="badge"><i data-lucide="clock" style="width:12px;height:12px;"></i> NOV 2025</div>
+        </div>
+        <div class="flex gap-2 mb-8 flex-wrap">
+          <span class="badge">Flutter</span>
+          <span class="badge">Supabase</span>
+        </div>
+        <ul class="bullet-list">
+          <li><i data-lucide="corner-down-right"></i> Constructed a cross-platform behavioral finance application using Flutter and Supabase, with a secure local SMS parsing engine that eliminates 95% of manual data entry.</li>
+          <li><i data-lucide="corner-down-right"></i> Designed an AI chat assistant and LLM-based nudging system delivering personalized, natural-language financial insights and positive reinforcement.</li>
+        </ul>
+      </div>
+
+      <div class="card group">
+        <div class="vent-container">
+          <div class="vent-slot"></div><div class="vent-slot"></div><div class="vent-slot"></div>
+        </div>
+        <div class="flex justify-between items-start mb-4">
+          <h3 style="font-size: 1.5rem;">EduPulse</h3>
+          <div class="badge"><i data-lucide="clock" style="width:12px;height:12px;"></i> SEP 2025</div>
+        </div>
+        <div class="flex gap-2 mb-8 flex-wrap">
+          <span class="badge">Next.js</span>
+          <span class="badge">Node.js</span>
+          <span class="badge">Supabase</span>
+        </div>
+        <ul class="bullet-list">
+          <li><i data-lucide="corner-down-right"></i> Programmed a full-stack educational platform using Next.js, Node.js, and Supabase, implementing Random Forest and Gemini API models to predict dropouts and trigger early-warning alerts via n8n.</li>
+          <li><i data-lucide="corner-down-right"></i> Established interactive teacher dashboards and a confidential AI chatbot interface for students to facilitate timely academic interventions and support mental well-being.</li>
+        </ul>
+      </div>
+
+      <div class="card group">
+        <div class="vent-container">
+          <div class="vent-slot"></div><div class="vent-slot"></div><div class="vent-slot"></div>
+        </div>
+        <div class="flex justify-between items-start mb-4">
+          <h3 style="font-size: 1.5rem;">Legal Assist AI</h3>
+          <div class="badge"><i data-lucide="clock" style="width:12px;height:12px;"></i> MAR 2025</div>
+        </div>
+        <div class="flex gap-2 mb-8 flex-wrap">
+          <span class="badge">Python</span>
+          <span class="badge">Streamlit</span>
+        </div>
+        <ul class="bullet-list">
+          <li><i data-lucide="corner-down-right"></i> Formulated an AI-powered legal assistant web application with automated case summarization, legal argument generation, and IPC search capabilities.</li>
+          <li><i data-lucide="corner-down-right"></i> Developed a highly interactive user interface using Streamlit, securing a Top 10 placement for presentations in a college innovation program.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="container">
+    <div class="mb-12">
+      <div class="mono-label text-accent mb-2">RECOGNITION</div>
+      <h2>Awards & Certifications</h2>
+    </div>
+    
+    <div class="grid grid-3">
+      <div class="card group">
+        <div class="icon-housing">
+          <i data-lucide="award" style="width:28px;height:28px;"></i>
+        </div>
+        <h3 style="font-size: 1.25rem;">Pre-Finalist</h3>
+        <div class="mono-label mb-4">Top 10% of 204 participants</div>
+        <p style="font-size: 1rem;">NUDGE Studio Design Challenge for the Financial Resilience Platform.</p>
+      </div>
+      
+      <div class="card group">
+        <div class="icon-housing">
+          <i data-lucide="medal" style="width:28px;height:28px;"></i>
+        </div>
+        <h3 style="font-size: 1.25rem;">Top 10 Finalist</h3>
+        <div class="mono-label mb-4">College Innovation Program</div>
+        <p style="font-size: 1rem;">Presentations for Legal Assist AI.</p>
+      </div>
+      
+      <div class="card group">
+        <div class="icon-housing">
+          <i data-lucide="trophy" style="width:28px;height:28px;"></i>
+        </div>
+        <h3 style="font-size: 1.25rem;">Top 5 Team</h3>
+        <div class="mono-label mb-4">Internal Smart India Hackathon</div>
+        <p style="font-size: 1rem;">Awarded for the EduPulse educational platform project.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="card" style="text-align: center; max-width: 800px; margin: 0 auto; padding: 64px 32px;">
+      <div class="vent-container">
+        <div class="vent-slot"></div><div class="vent-slot"></div><div class="vent-slot"></div>
+      </div>
+      
+      <div class="icon-housing mx-auto">
+        <i data-lucide="radio" style="width:28px;height:28px;"></i>
+      </div>
+      <div class="mono-label text-accent mb-2">GET IN TOUCH</div>
+      <h2>Let's build together.</h2>
+      <p class="mx-auto mb-8">I'm currently seeking internship opportunities where I can apply my skills in software development to real-world applications.</p>
+      
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href="mailto:nskeerthanacse@gmail.com" class="btn btn-primary"><i data-lucide="mail" style="width:18px;height:18px;"></i> Email Me</a>
+        <a href="https://linkedin.com/in/keerthana-n-s-b30461336" target="_blank" class="btn btn-secondary"><i data-lucide="linkedin" style="width:18px;height:18px;"></i> LinkedIn</a>
+        <a href="tel:+919207551526" class="btn btn-secondary"><i data-lucide="phone" style="width:18px;height:18px;"></i> Call Me</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="padding: 48px 0; text-align: center; border-top: 1px solid var(--shadow-light); box-shadow: inset 0 1px 0 rgba(0,0,0,0.05);">
+  <div class="container">
+    <div class="mono-label">© 2026 KEERTHANA N S. ALL RIGHTS RESERVED.</div>
+  </div>
+</footer>
+
+<script>
+  // Initialize Lucide Icons
+  lucide.createIcons();
+
+  // Mobile menu toggle logic
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  
+  hamburgerBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  
+  function toggleMenu() {
+    mobileMenu.classList.remove('open');
+  }
+
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add('nav-scrolled');
+    } else {
+      navbar.classList.remove('nav-scrolled');
+    }
+  });
+</script>
+</body>
+</html>
